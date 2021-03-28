@@ -2,9 +2,9 @@ package DiscordBot.Voter;
 
 public class Ballot {
     
-    String Name;
-    private Ballot[] ballots;
-    private int numBallots;
+    public String Name;
+    private Category[] categories;
+    private int numCategories;
     private static final int GROW_AMOUNT = 4;
     private static final int FAIL_CONDITION = -1;
     public static String text;
@@ -12,40 +12,40 @@ public class Ballot {
     
     
     public Ballot() {
-        numBallots = 0;
-        ballots = new Ballot[GROW_AMOUNT];
+        numCategories = 0;
+        categories = new Category[GROW_AMOUNT];
     }
     
     
     
-    public boolean add(Ballot ballot){
-        if(find(ballot) != FAIL_CONDITION){
+    public boolean add(Category category){
+        if(find(category) != FAIL_CONDITION){
             return false;
         }
-        numBallots++;
-        if(numBallots > ballots.length) {
+        numCategories++;
+        if(numCategories > categories.length) {
             grow();
         }
-        ballots[numBallots - 1] = ballot;
+        categories[numCategories - 1] = category;
         return true;
     }
     
     
     private void grow(){
-        Ballot[] grow = new Ballot[ballots.length + GROW_AMOUNT];
-        for(int i = 0; i < ballots.length; i++) {
-            grow[i] = ballots[i];
+        Category[] grow = new Category[categories.length + GROW_AMOUNT];
+        for(int i = 0; i < categories.length; i++) {
+            grow[i] = categories[i];
         }
-        ballots = grow;
+        categories = grow;
     }
     
-    private int find(Ballot ballot){
+    public int find(Category category){
         int index = 0;
-        for(int i = 0; i < ballots.length; i++) {
-            if(ballots[i] == null){
+        for(int i = 0; i < categories.length; i++) {
+            if(categories[i] == null){
                 continue;
             }
-            if(ballots[i].Name.equals(ballot.Name)) {
+            if(categories[i].Name.equals(category.Name)) {
                 index = i;
                 return index;
             }
@@ -56,40 +56,12 @@ public class Ballot {
     }
     
 
-    
-    public boolean remove(Ballot ballot){
-        final int index = find(ballot);
-        //System.out.println(index);
-        if(index >= 0) {
-            ballots[index] = null;
-            numBallots--;
-            return true;
-        }
-        return false;
-    }
-    
-    private void shiftArray() {
-        Ballot [] shiftedArray = new Ballot[ballots.length];
-        int count = 0;
-        for(int i = 0; i < ballots.length; i++) {
-            if(ballots[i] != null) {
-                shiftedArray[count] = ballots[i];
-            }
-            else{
-                count--;
-            }
-            count++;
-        }
-        ballots = shiftedArray;
-    }
-    
     public void print(){
-        shiftArray();
-        for(int i = 0; i < ballots.length; i++) {
-            if(ballots[i] == null) { 
+        for(int i = 0; i < categories.length; i++) {
+            if(categories[i] == null) { 
                 continue;
             }
-            Event.getText(ballots[i].Name + '\n');
+            Event.getText(categories[i].Name + '\n');
         }
     }
     
